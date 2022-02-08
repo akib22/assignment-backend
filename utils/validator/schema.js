@@ -7,6 +7,10 @@ const schema = {
     email: Joi.string().email().required(),
     phoneNumber: Joi.string().required(),
   }).options({ abortEarly: false }),
+  signIn: Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }).options({ abortEarly: false }),
 };
 
 module.exports = schema;

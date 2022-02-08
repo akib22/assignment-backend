@@ -40,3 +40,42 @@ exports.signUp = async (req, res) => {
       .json({ success: false, errors: { message: 'Server error.' } });
   }
 };
+
+// signin controller
+exports.signIn = async (req, res) => {
+  try {
+    // validate inputs
+    const { value, errors } = validator(req.body, validationSchema.signIn);
+
+    if (errors) {
+      return res.status(400).send({ success: false, errors });
+    }
+
+    const { email, password } = value;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(400)
+        .send({ success: false, errors: { message: 'User not found.' } });
+    }
+
+    // match password
+    const isEqual = await bcrypt.compare(password, user.password);
+
+    if (!isEqual) {
+      return res.status(400).send({
+        success: false,
+        errors: { message: 'Email and password did not match.' },
+      });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+
+    return res.status(200).json({ success: true, token, user });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, errors: { message: 'Server error.' } });
+  }
+};
