@@ -1,18 +1,23 @@
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// local dependencies
+const authRoutes = require('./routes/auth');
 const pageNotFound = require('./middlewares/404');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
   res.send('App is running!');
 });
+
+// auth routes
+app.use('/api/user', authRoutes);
 
 // page not found or 404 middleware
 app.use(pageNotFound);
