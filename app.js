@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
+const productRoutes = require('./routes/product');
 const pageNotFound = require('./middlewares/404');
 
 const app = express();
@@ -18,6 +19,9 @@ app.get('/', (req, res) => {
 
 // auth routes
 app.use('/api/user', authRoutes);
+
+// products routes
+app.use('/api/products', productRoutes);
 
 // page not found or 404 middleware
 app.use(pageNotFound);
