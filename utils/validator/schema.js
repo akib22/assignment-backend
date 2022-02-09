@@ -11,7 +11,7 @@ const schema = {
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }).options({ abortEarly: false }),
-  addWishList: Joi.object({
+  wishList: Joi.object({
     productId: Joi.string().required(),
   }),
 };

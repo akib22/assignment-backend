@@ -59,11 +59,11 @@ exports.getWishListProducts = async (req, res) => {
   }
 };
 
-// add wishlist products
+// add wishlist product
 exports.addWishList = async (req, res) => {
   try {
     // validate inputs
-    const { value, errors } = validator(req.body, validationSchema.addWishList);
+    const { value, errors } = validator(req.body, validationSchema.wishList);
 
     if (errors) {
       return res.status(400).send({ success: false, errors });
@@ -75,6 +75,29 @@ exports.addWishList = async (req, res) => {
     });
 
     res.status(201).json({ success: true, message: 'Successfully added.' });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: { message: 'Server error' } });
+  }
+};
+
+// remove wishlist product
+exports.removeWishList = async (req, res) => {
+  try {
+    // validate inputs
+    const { value, errors } = validator(req.body, validationSchema.wishList);
+
+    if (errors) {
+      return res.status(400).send({ success: false, errors });
+    }
+
+    const { productId } = value;
+    await User.findByIdAndUpdate(req.userId, {
+      $pull: { wishlists: Types.ObjectId(productId) },
+    });
+
+    res.status(200).json({ success: true, message: 'Successfully removed.' });
   } catch (error) {
     res
       .status(500)
