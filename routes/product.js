@@ -6,11 +6,13 @@ const {
   getWishListProducts,
   addWishList,
   removeWishList,
+  search,
 } = require('../controllers/product');
 
 const router = express.Router();
 
 router.get('/', getProducts);
+router.get('/search', search);
 router.get('/wishlist', isAuth, getWishListProducts);
 router.patch('/wishlist/add', isAuth, addWishList);
 router.delete('/wishlist/remove', isAuth, removeWishList);

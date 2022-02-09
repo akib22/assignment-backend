@@ -104,3 +104,21 @@ exports.removeWishList = async (req, res) => {
       .json({ success: false, error: { message: 'Server error' } });
   }
 };
+
+/**
+ * @controller search products
+ * @desc search all products from database then return them.
+ * @return [{products}]
+ */
+exports.search = async (req, res) => {
+  try {
+    const { title } = req.query;
+    const products = await Product.find({ title: RegExp(title, 'ig') });
+
+    res.status(200).json({ success: true, products });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: { message: 'Server error' } });
+  }
+};
