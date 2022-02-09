@@ -1,5 +1,9 @@
+const { Types } = require('mongoose');
+
 const User = require('../models/User');
 const Product = require('../models/Product');
+const validator = require('../utils/validator');
+const validationSchema = require('../utils/validator/schema');
 
 /**
  * @controller get products
@@ -48,6 +52,29 @@ exports.getWishListProducts = async (req, res) => {
     });
 
     res.status(200).json({ success: true, products: user.wishlists });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, error: { message: 'Server error' } });
+  }
+};
+
+// add wishlist products
+exports.addWishList = async (req, res) => {
+  try {
+    // validate inputs
+    const { value, errors } = validator(req.body, validationSchema.addWishList);
+
+    if (errors) {
+      return res.status(400).send({ success: false, errors });
+    }
+
+    const { productId } = value;
+    await User.findByIdAndUpdate(req.userId, {
+      $addToSet: { wishlists: Types.ObjectId(productId) },
+    });
+
+    res.status(201).json({ success: true, message: 'Successfully added.' });
   } catch (error) {
     res
       .status(500)

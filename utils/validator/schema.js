@@ -11,6 +11,9 @@ const schema = {
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }).options({ abortEarly: false }),
+  addWishList: Joi.object({
+    productId: Joi.string().required(),
+  }),
 };
 
 module.exports = schema;
