@@ -15,9 +15,17 @@ exports.signUp = async (req, res) => {
       return res.status(400).send({ success: false, errors });
     }
 
+    const { name, password, email, phoneNumber } = value;
+    const userExist = await User.findOne({ email });
+
+    if (userExist) {
+      return res
+        .status(400)
+        .json({ success: false, errors: { message: 'Email already exists!' } });
+    }
+
     // hashing password
     value.password = await bcrypt.hash(value.password, 10);
-    const { name, password, email, phoneNumber } = value;
     const user = await User.create({
       name,
       password,
@@ -28,13 +36,6 @@ exports.signUp = async (req, res) => {
 
     return res.status(201).json({ success: true, user, accessToken });
   } catch (error) {
-    // duplicate email error
-    if (error.code === 11000) {
-      return res
-        .status(400)
-        .json({ success: false, errors: { message: 'Email already exists!' } });
-    }
-
     return res
       .status(500)
       .json({ success: false, errors: { message: 'Server error.' } });
