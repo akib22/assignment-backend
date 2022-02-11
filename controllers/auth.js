@@ -32,9 +32,9 @@ exports.signUp = async (req, res) => {
       email,
       phoneNumber,
     });
-    const accessToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
-    return res.status(201).json({ success: true, user, accessToken });
+    return res.status(201).json({ success: true, user, token });
   } catch (error) {
     return res
       .status(500)
