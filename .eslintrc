@@ -8,5 +8,8 @@
     "func-names": "off",
     "consistent-return": "off",
     "no-param-reassign": "off"
+  },
+  "env": {
+    "jest": true
   }
 }
