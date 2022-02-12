@@ -11,7 +11,7 @@ const validator = (data, schema) => {
     return { errors, value: null };
   }
 
-  return { error: null, value };
+  return { errors: null, value };
 };
 
 module.exports = validator;
