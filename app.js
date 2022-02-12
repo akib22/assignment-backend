@@ -30,11 +30,10 @@ async function createDBConnection() {
   try {
     if (process.env.NODE_ENV !== 'TEST') {
       await mongoose.connect(process.env.MONGODB_URL);
+      app.listen(process.env.PORT || 5000, () =>
+        console.log(`app running on port ${process.env.PORT}!`)
+      );
     }
-
-    app.listen(process.env.PORT || 5000, () =>
-      console.log(`app running on port ${process.env.PORT}!`)
-    );
   } catch (error) {
     console.log(error, 'Database connection failed.');
   }

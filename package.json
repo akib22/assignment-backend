@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "NODE_ENV=TEST jest",
-    "test:watch": "NODE_ENV=TEST jest --watch",
+    "test": "NODE_ENV=TEST jest --detectOpenHandles",
+    "test:watch": "NODE_ENV=TEST jest --watch --detectOpenHandles",
     "lint": "eslint \"**/*.js\"",
     "lint:fix": "eslint \"**/*.js\" --fix",
     "prepare": "husky install"
