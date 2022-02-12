@@ -45,6 +45,7 @@ describe('POST /api/user/signup', () => {
       Promise.resolve({ ...reqBody, id: Types.ObjectId() })
     );
     findOneSpy.mockReturnValue(Promise.resolve(null));
+    hashSpy.mockReturnValue(Promise.resolve(reqBody.password));
 
     const response = await request(app).post('/api/user/signup').send(reqBody);
     const { body, statusCode } = response;
