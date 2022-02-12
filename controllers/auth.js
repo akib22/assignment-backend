@@ -15,6 +15,8 @@ exports.signUp = async (req, res) => {
       return res.status(400).send({ success: false, errors });
     }
 
+    // hashing password
+    value.password = await bcrypt.hash(value.password, 10);
     const { name, password, email, phoneNumber } = value;
     const userExist = await User.findOne({ email });
 
@@ -24,8 +26,6 @@ exports.signUp = async (req, res) => {
         .json({ success: false, errors: { message: 'Email already exists!' } });
     }
 
-    // hashing password
-    value.password = await bcrypt.hash(value.password, 10);
     const user = await User.create({
       name,
       password,
