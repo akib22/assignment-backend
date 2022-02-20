@@ -11,18 +11,18 @@ const token = jwt.sign(
   process.env.JWT_SECRET || 'test_secret'
 );
 
-describe('PATCH /api/products/wishlist/add', () => {
+describe('DELETE /api/products/wishlist/remove', () => {
   afterEach(() => jest.clearAllMocks());
 
   test('should get unauthorized error message when jwt is invalid or not given', async () => {
-    const response = await request(app).patch('/api/products/wishlist/add');
+    const response = await request(app).delete('/api/products/wishlist/remove');
 
     expect(response.status).toBe(401);
   });
 
   test('should return error when data is invalid', async () => {
     const response = await request(app)
-      .patch('/api/products/wishlist/add')
+      .delete('/api/products/wishlist/remove')
       .set({ Authorization: `Bearer ${token}` });
 
     expect(response.status).toBe(400);
@@ -33,11 +33,11 @@ describe('PATCH /api/products/wishlist/add', () => {
   test('should add product to wishlist when data is valid', async () => {
     findByIdAndUpdateSpy.mockReturnValue({});
     const response = await request(app)
-      .patch('/api/products/wishlist/add')
+      .delete('/api/products/wishlist/remove')
       .send({ productId: Types.ObjectId() })
       .set({ Authorization: `Bearer ${token}` });
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('message');
   });
 });
